@@ -23,6 +23,9 @@ app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date() }));
 
+// app.get('/', function (req, res) => res.send("hello"))
+
+
 // Global error handler
 app.use((err, req, res, next) => {
   const status = res.statusCode !== 200 ? res.statusCode : 500;
