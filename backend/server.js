@@ -9,28 +9,63 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+// ✅ CORS FIX
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://maa-mamta-enterprises-9z4g.vercel.app"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+app.options("*", cors());
+
+// ✅ MIDDLEWARE
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
-// Routes
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+// ✅ ROUTES
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
-app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date() }));
-
-// app.get('/', function (req, res) => res.send("hello"))
-
-
-// Global error handler
-app.use((err, req, res, next) => {
-  const status = res.statusCode !== 200 ? res.statusCode : 500;
-  res.status(status).json({ message: err.message, stack: process.env.NODE_ENV === 'production' ? null : err.stack });
+// ✅ HEALTH CHECK
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', time: new Date() });
 });
 
+// ✅ ROOT ROUTE
+app.get('/', (req, res) => {
+  res.send("API is running 🚀");
+});
+
+// ✅ ERROR HANDLER
+app.use((err, req, res, next) => {
+  const status = res.statusCode !== 200 ? res.statusCode : 500;
+
+  res.status(status).json({
+    message: err.message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack
+  });
+});
+
+// ✅ SERVER START
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
