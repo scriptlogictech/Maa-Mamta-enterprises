@@ -12,7 +12,8 @@ const app = express();
 // ✅ CORS FIX
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://maamamtaenterprises.com"
+  "https://maamamtaenterprises.com",
+  "https://www.maamamtaenterprises.com" // ✅ ADD THIS
 ];
 
 app.use(cors({
