@@ -52,7 +52,7 @@ export default function Register() {
 
           <div className="mt-6 pt-6 border-t border-gray-100 text-center">
             <span className="text-sm text-gray-500 font-body">Already have an account? </span>
-            <Link to="/login" className="text-sm text-brand-teal font-semibold hover:text-brand-tealDark font-body">Sign in</Link>
+            <Link to="/login" className="text-sm text-brand-teal font-semibold hover:text-brand-tealDark font-body">Sign in here</Link>
           </div>
         </div>
       </div>
