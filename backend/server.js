@@ -12,7 +12,7 @@ const app = express();
 // ✅ CORS FIX
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://maa-mamta-enterprises.vercel.app"
+  "https://maamamtaenterprises.com"
 ];
 
 app.use(cors({
