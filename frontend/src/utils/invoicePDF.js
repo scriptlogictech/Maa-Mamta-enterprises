@@ -53,39 +53,45 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
     imgToBase64('/campa.jpg'),
   ]);
 
-  const doc   = new jsPDF({ unit: 'mm', format: 'a4' });
-  const pageW = 210;
+  const doc    = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pageW  = 210;
   const margin = 14;
 
   // ════════════════════════════════════════════════════
   // HEADER SECTION
   // Layout:
-  //   Row 1 — Reliance logo (left) | "Bill Invoice" center | Campa logo (right)
-  //   Row 2 — Company name + details (left) | Maa Mamta logo (right)
+  //   Row 1 — "Bill Invoice" centered alone
+  //   Row 2 — Campa logo (left) | Reliance logo (right)
+  //   Row 3 — Company name + details (left) | Maa Mamta logo (right)
   // ════════════════════════════════════════════════════
 
-  // ── Row 1: Reliance logo (top-left) ──────────────────
-  doc.addImage(relianceB64, 'JPEG', margin, 8, 42, 18, undefined, 'FAST');
-
-  // ── Row 1: "Bill Invoice" title (center) ─────────────
+  // ── Row 1: "Bill Invoice" title (center, alone on top) ─
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(13);
   doc.setTextColor(0);
-  doc.text('Bill Invoice', pageW / 2, 17, { align: 'center' });
+  doc.text('Bill Invoice', pageW / 2, 10, { align: 'center' });
 
-  // ── Row 1: Campa logo (top-right) ────────────────────
-  doc.addImage(campaB64, 'JPEG', pageW - margin - 42, 8, 42, 18, undefined, 'FAST');
-
-  // ── Thin separator line between row1 and row2 ────────
+  // ── Separator between row 1 and row 2 ────────────────
   doc.setDrawColor(200, 200, 200);
   doc.setLineWidth(0.2);
-  doc.line(margin, 28, pageW - margin, 28);
+  doc.line(margin, 14, pageW - margin, 14);
 
-  // ── Row 2: Company name + details (left) ─────────────
+  // ── Row 2: Campa logo (left) ─────────────────────────
+  doc.addImage(campaB64, 'JPEG', margin, 16, 42, 18, undefined, 'FAST');
+
+  // ── Row 2: Reliance logo (right) ─────────────────────
+  doc.addImage(relianceB64, 'JPEG', pageW - margin - 42, 16, 42, 18, undefined, 'FAST');
+
+  // ── Separator between row 2 and row 3 ────────────────
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.2);
+  doc.line(margin, 36, pageW - margin, 36);
+
+  // ── Row 3: Company name + details (left) ─────────────
   doc.setFontSize(13);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(0);
-  doc.text(COMPANY.name, margin, 35);
+  doc.text(COMPANY.name, margin, 43);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
@@ -93,23 +99,22 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
   [
     COMPANY.address,
     COMPANY.city,
-    `Phone: ${COMPANY.phone}`,
-    `Email: ${COMPANY.email}`,
     `GSTIN: ${COMPANY.gstin}`,
     `FSSAI: ${COMPANY.fssai}`,
-  ].forEach((line, i) => doc.text(line, margin, 41 + i * 4.5));
+    `Phone: ${COMPANY.phone}`,
+    `Email: ${COMPANY.email}`,
+  ].forEach((line, i) => doc.text(line, margin, 49 + i * 4.5));
 
-  // ── Row 2: Maa Mamta logo (right, circular style) ────
-  // Logo centered on right side between y=28 and divider
+  // ── Row 3: Maa Mamta logo (right) ────────────────────
   const logoSize = 32;
   const logoX    = pageW - margin - logoSize;
-  const logoY    = 29;
+  const logoY    = 37;
   doc.addImage(maaB64, 'JPEG', logoX, logoY, logoSize, logoSize, undefined, 'FAST');
 
   // ── Main divider ──────────────────────────────────────
   doc.setDrawColor(0);
   doc.setLineWidth(0.4);
-  doc.line(margin, 64, pageW - margin, 64);
+  doc.line(margin, 73, pageW - margin, 73);
 
   // ════════════════════════════════════════════════════
   // CUSTOMER + INVOICE META
@@ -120,21 +125,21 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(0);
-  doc.text('Customer:', margin, 73);
+  doc.text('Customer:', margin, 81);
   doc.setFont('helvetica', 'normal');
-  doc.text(order.customerName || 'N/A', margin + 23, 73);
+  doc.text(order.customerName || 'N/A', margin + 23, 81);
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
-  doc.text('Mobile:', margin, 80);
+  doc.text('Mobile:', margin, 88);
   doc.setFont('helvetica', 'normal');
-  doc.text(order.customerPhone || 'N/A', margin + 16, 80);
+  doc.text(order.customerPhone || 'N/A', margin + 16, 88);
 
   doc.setFont('helvetica', 'bold');
-  doc.text('Address:', margin, 86);
+  doc.text('Address:', margin, 94);
   doc.setFont('helvetica', 'normal');
   const addrLines = doc.splitTextToSize(order.customerAddress || 'N/A', 65);
-  doc.text(addrLines, margin + 18, 86);
+  doc.text(addrLines, margin + 18, 94);
 
   // Invoice meta (right)
   const col1 = 120;
@@ -151,9 +156,9 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9.5);
     doc.setTextColor(0);
-    doc.text(label, col1, 73 + i * 6.5);
+    doc.text(label, col1, 81 + i * 6.5);
     doc.setFont('helvetica', 'normal');
-    doc.text(val, col2, 73 + i * 6.5);
+    doc.text(val, col2, 81 + i * 6.5);
   });
 
   // ════════════════════════════════════════════════════
@@ -172,13 +177,13 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
   ]);
 
   autoTable(doc, {
-    startY: 97,
+    startY: 105,
     head: [['S.No', 'Item', 'Qty', 'Rate (Rs.)', 'Amount (Rs.)']],
     body: tableBody,
     foot: [['TOTAL', '', totalQty, '', `Rs.${totalAmt}`]],
     margin: { left: margin, right: margin },
     styles: {
-      fontSize:    9.5,
+      fontSize:    8.5,
       cellPadding: 3,
       textColor:   [0, 0, 0],
       lineColor:   [0, 0, 0],
