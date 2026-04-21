@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   description: { type: String },
-  category: { type: String, required: true, enum: ['Cola', 'Orange', 'Lemon', 'Water', 'Other'] },
+  category: { type: String, required: true, enum: ['Cola', 'Orange', 'Lemon', 'Independence', 'Sure', 'SunCrush', 'Raskik-Mango', 'Raskik Nimbu Pani', 'Other'] },
   size: { type: String, required: true }, // e.g. '250ml', '500ml', '1L', '2L'
   price: { type: Number, required: true, min: 0 },
   mrp: { type: Number, required: true },

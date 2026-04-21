@@ -3,8 +3,21 @@ import api from '../../api/axios';
 import toast from 'react-hot-toast';
 import { FiPlus, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
 
-const CATEGORIES = ['Cola', 'Orange', 'Lemon', 'Water', 'Other'];
-const SIZES = ['150ml', '200ml', '250ml', '500ml', '600ml', '1L', '1.25L', '2L'];
+const CATEGORIES = ['Cola', 'Orange', 'Lemon', 'Independence', 'Sure', 'SunCrush', 'Raskik-Mango', 'Raskik Nimbu Pani', 'Other'];
+const SIZES = [
+  '125 ml',
+  '150 ml',
+  '180 ml',
+  '185 ml',
+  '200 ml',
+  '250 ml',
+  '330 ml',
+  '500 ml',
+  '750 ml',
+  '1 l',
+  '1.5 l',
+  '2.25 l'
+];
 
 const emptyForm = { name: '', category: 'Cola', size: '500ml', price: '', mrp: '', stock: '', reorderLevel: 50, gstPercent: 18, description: '', isActive: true };
 
