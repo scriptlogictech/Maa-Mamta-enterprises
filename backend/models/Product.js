@@ -56,7 +56,7 @@ const productSchema = new mongoose.Schema({
   stock: { type: Number, required: true, default: 0 },
   reorderLevel: { type: Number, default: 50 },
 
-  sku: { type: String},
+
 
   image: { type: String, default: '' },
 
