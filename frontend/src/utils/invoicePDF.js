@@ -77,10 +77,10 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
   doc.line(margin, 14, pageW - margin, 14);
 
   // ── Row 2: Campa logo (left) ─────────────────────────
-  doc.addImage(campaB64, 'JPEG', margin, 16, 42, 18, undefined, 'FAST');
+  doc.addImage(campaB64, 'JPEG', margin, 16, 38, 18, undefined, 'FAST');
 
   // ── Row 2: Reliance logo (right) ─────────────────────
-  doc.addImage(relianceB64, 'JPEG', pageW - margin - 42, 16, 42, 18, undefined, 'FAST');
+  doc.addImage(relianceB64, 'JPEG', pageW - margin - 42, 16, 38, 18, undefined, 'FAST');
 
   // ── Separator between row 2 and row 3 ────────────────
   doc.setDrawColor(200, 200, 200);
@@ -201,6 +201,7 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
       textColor: [0, 0, 0],
       fontStyle: 'bold',
       lineWidth: 0.3,
+      halign: 'right',   
     },
     columnStyles: {
       0: { cellWidth: 16, halign: 'center' },
