@@ -7,7 +7,22 @@ import { generateInvoicePDF } from '../../utils/invoicePDF';
 import "../../myownstyles/Pos.css"
 
 const PAYMENT_METHODS = ['cash', 'upi', 'card', 'credit'];
-const CATEGORIES = ['All', 'Cola', 'Orange', 'Lemon', 'Water', 'Other'];
+const CATEGORIES = [
+  'All',
+  'Cola',
+  'Orange',
+  'Lemon',
+  'Independence',
+  'Sure',
+  'Suncrush',
+  'Raskik Mango',
+  'Raskik Nimbu Paani',
+  'Power Up',
+  'Fizz',
+  'Mazza',
+  'Amul Kool',
+  'Other'
+];
 const catImages = {
   Cola: '/images/cola.webp',
   Orange: '/images/orange.webp',
@@ -160,7 +175,7 @@ export default function POS() {
                 <input className="input pl-9 text-sm" placeholder="Search products..."
                   value={search} onChange={e => setSearch(e.target.value)} />
               </div>
-              <div className="flex gap-2 overflow-x-auto pb-1">
+              <div className="flex flex-wrap gap-2 pb-1">
                 {CATEGORIES.map(c => (
                   <button key={c} onClick={() => setCategory(c)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 transition-all font-body ${category === c ? 'bg-brand-teal text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
