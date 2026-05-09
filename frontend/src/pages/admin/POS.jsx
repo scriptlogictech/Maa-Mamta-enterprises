@@ -122,15 +122,30 @@ export default function POS() {
         cashierName,
         paidAmount: paid,
       });
-      const orderWithMeta = { ...data, customerName, customerPhone, customerAddress };
+
+      // ✅ FIX: explicitly store paid & cashierName so reprint uses same values
+      const orderWithMeta = {
+        ...data,
+        customerName,
+        customerPhone,
+        customerAddress,
+        paidAmount: paid,       // ← use local `paid`, not data.paidAmount
+        cashierName,            // ← store cashierName explicitly
+      };
+
       setLastOrder(orderWithMeta);
       setLastCart([...cart]);
       toast.success(`Bill generated: ${data.orderNumber}`);
+
       // Auto print PDF
       await printBill(orderWithMeta, [...cart], paid, cashierName);
-      // Reset
-      setCart([]); setCustomerName(''); setCustomerPhone('');
-      setCustomerAddress(''); setPaidAmount('');
+
+      // Reset form
+      setCart([]);
+      setCustomerName('');
+      setCustomerPhone('');
+      setCustomerAddress('');
+      setPaidAmount('');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to generate bill');
     }
@@ -193,12 +208,12 @@ export default function POS() {
                   <button key={p._id} onClick={() => addToCart(p)}
                     className="card p-3 text-left hover:border-brand-teal hover:shadow-teal transition-all active:scale-95">
                     <div className="flex justify-center mb-2">
-  <img
-    src={catImages[p.category] || '/logo.jpg'}
-    alt={p.category}
-    className="w-10 h-10 object-contain"
-  />
-</div>
+                      <img
+                        src={catImages[p.category] || '/logo.jpg'}
+                        alt={p.category}
+                        className="w-10 h-10 object-contain"
+                      />
+                    </div>
                     <div className="text-xs font-semibold text-gray-900 leading-tight mb-1 line-clamp-2 font-body">{p.name}</div>
                     <div className="text-sm font-bold text-brand-teal font-body">₹{p.price}</div>
                     <div className="text-xs text-gray-400 font-body">Stock: {p.stock}</div>
@@ -290,7 +305,9 @@ export default function POS() {
               </button>
 
               {lastOrder && (
-                <button onClick={() => printBill(lastOrder, lastCart, lastOrder.paidAmount, lastOrder.cashierName)}
+                <button
+                  // ✅ FIX: use lastOrder.paidAmount & lastOrder.cashierName (now stored correctly)
+                  onClick={() => printBill(lastOrder, lastCart, lastOrder.paidAmount, lastOrder.cashierName)}
                   disabled={printing}
                   className="btn-outline w-full py-2.5 text-sm flex items-center justify-center gap-2">
                   <FiPrinter size={15} />
@@ -356,7 +373,8 @@ export default function POS() {
                           onClick={() => printBill(
                             bill,
                             bill.items?.map(i => ({ ...i, qty: i.quantity })),
-                            bill.paidAmount || bill.totalAmount,
+                            // ✅ FIX: fallback chain — stored paidAmount → totalAmount
+                            bill.paidAmount ?? bill.totalAmount,
                             bill.cashierName || ''
                           )}
                           disabled={printing}
