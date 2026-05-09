@@ -28,6 +28,10 @@ const catImages = {
   Orange: '/images/orange.webp',
   Lemon: '/images/lemon.webp',
   Water: '/images/water.jpg',
+  Independence: '/images/independence.jpg',
+  Sure: '/images/sure.jpg',
+  Fizz: '/images/fizz.jpg',
+  AmulKool: '/images/Amul-Kool',
   Other: '/images/other.jpg'
 };
 
