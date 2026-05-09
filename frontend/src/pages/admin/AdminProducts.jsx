@@ -48,7 +48,7 @@ const emptyForm = {
   mrp: '',
   stock: '',
   reorderLevel: 50,
-  gstPercent: 18,
+  gstPercent: 0,
   description: '',
   isActive: true
 };

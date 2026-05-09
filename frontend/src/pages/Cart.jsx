@@ -74,7 +74,7 @@ export default function Cart() {
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm text-gray-600">
-                <span>GST (18%)</span>
+                <span>GST (0%)</span>
                 <span>₹{gstAmount.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm text-gray-600">

@@ -32,7 +32,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => setItems([]);
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const gstAmount = items.reduce((sum, i) => sum + (i.price * i.quantity * (i.gstPercent || 18)) / 100, 0);
+  const gstAmount = items.reduce((sum, i) => sum + (i.price * i.quantity * (i.gstPercent || 0)) / 100, 0);
   const total = subtotal + gstAmount;
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 

@@ -5,7 +5,7 @@ const orderItemSchema = new mongoose.Schema({
   name: String,
   quantity: { type: Number, required: true, min: 1 },
   price: { type: Number, required: true },
-  gstPercent: { type: Number, default: 18 },
+  gstPercent: { type: Number, default: 0 },
 });
 
 const orderSchema = new mongoose.Schema({
