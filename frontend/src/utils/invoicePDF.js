@@ -201,7 +201,7 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
       textColor: [0, 0, 0],
       fontStyle: 'bold',
       lineWidth: 0.3,
-      halign: 'right',   
+      halign: 'center',   
     },
     columnStyles: {
       0: { cellWidth: 16, halign: 'center' },

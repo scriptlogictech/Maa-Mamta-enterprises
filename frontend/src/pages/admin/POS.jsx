@@ -31,7 +31,10 @@ const catImages = {
   Independence: '/images/independence.jpg',
   Sure: '/images/sure.jpg',
   Fizz: '/images/fizz.jpg',
-  AmulKool: '/images/Amul-Kool',
+  'Amul Kool': '/images/AmulKool.jpg',
+  Mazza: '/images/mazza.jpg',
+  // Suncrush: '/images/Suncrush.jpg',
+  'Power Up': '/images/powerup.jpg',
   Other: '/images/other.jpg'
 };
 
