@@ -136,6 +136,7 @@ const createPOSOrder = asyncHandler(async (req, res) => {
     const p = await Product.findById(item.product);
 
     if (!p) throw new Error(`Product not found`);
+
     if (p.stock < item.quantity) {
       throw new Error(`Insufficient stock for ${p.name}`);
     }
@@ -144,7 +145,10 @@ const createPOSOrder = asyncHandler(async (req, res) => {
       product: p._id,
       name: p.name,
       quantity: item.quantity,
-      price: p.price,
+
+      // ✅ use edited POS price if available
+      price: item.price || p.price,
+
       gstPercent: 0
     };
   }));
@@ -163,26 +167,36 @@ const createPOSOrder = asyncHandler(async (req, res) => {
   const order = await Order.create({
     user: req.user._id,
     items: enriched,
+
     subtotal,
     gstAmount,
     totalAmount,
+
     paymentMethod,
     paymentStatus: payStatus,
     orderStatus: 'delivered',
     source: 'pos',
+
     customerName: customerName || '',
     customerPhone: customerPhone || '',
     customerAddress: customerAddress || '',
     cashierName: cashierName || '',
+
     paidAmount: paid,
-    notes: customerName ? `Customer: ${customerName}` : 'Walk-in',
+
+    notes: customerName
+      ? `Customer: ${customerName}`
+      : 'Walk-in',
   });
 
-  await Promise.all(enriched.map(i =>
-    Product.findByIdAndUpdate(i.product, {
-      $inc: { stock: -i.quantity }
-    })
-  ));
+  // Reduce stock
+  await Promise.all(
+    enriched.map(i =>
+      Product.findByIdAndUpdate(i.product, {
+        $inc: { stock: -i.quantity }
+      })
+    )
+  );
 
   res.status(201).json(order);
 });

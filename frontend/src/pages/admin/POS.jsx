@@ -117,7 +117,11 @@ export default function POS() {
     setLoading(true);
     try {
       const { data } = await api.post('/orders/pos', {
-        items: cart.map(i => ({ product: i._id, quantity: i.qty })),
+        items: cart.map(i => ({
+  product: i._id,
+  quantity: i.qty,
+  price: i.price
+})),
         paymentMethod,
         customerName,
         customerPhone,
