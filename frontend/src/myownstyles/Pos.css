@@ -144,3 +144,49 @@ table {
   background: #ccc;
   border-radius: 10px;
 }
+
+
+/* Price Edit Box */
+.price-editor{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:6px;
+}
+
+.currency-symbol{
+  font-size:12px;
+  font-weight:600;
+  color:#0f766e;
+}
+
+.price-input{
+  width:75px;
+  height:30px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  padding:4px 8px;
+  font-size:13px;
+  font-weight:600;
+  background:#ffffff;
+  color:#111827;
+  outline:none;
+  transition:all 0.2s ease;
+}
+
+.price-input:focus{
+  border-color:#0f766e;
+  box-shadow:0 0 0 3px rgba(15,118,110,0.15);
+}
+
+.price-input::-webkit-inner-spin-button,
+.price-input::-webkit-outer-spin-button{
+  opacity:1;
+  cursor:pointer;
+}
+
+.price-label{
+  font-size:11px;
+  color:#6b7280;
+  font-weight:500;
+}

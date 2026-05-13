@@ -261,7 +261,28 @@ export default function POS() {
                 <div key={item._id} className="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl">
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-semibold text-gray-900 truncate font-body">{item.name}</div>
-                    <div className="text-xs text-gray-500 font-body">₹{item.price} each</div>
+                    <div className="price-editor">
+  <span className="currency-symbol">₹</span>
+
+  <input
+    type="number"
+    value={item.price}
+    onChange={(e) => {
+      const value = Number(e.target.value);
+
+      setCart(prev =>
+        prev.map(i =>
+          i._id === item._id
+            ? { ...i, price: value }
+            : i
+        )
+      );
+    }}
+    className="price-input"
+  />
+
+  {/* <span className="price-label">each</span> */}
+</div>
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     <button onClick={() => changeQty(item._id, -1)}
