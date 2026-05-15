@@ -176,42 +176,93 @@ export async function generateInvoicePDF(order, cartItems, paidAmount, cashierNa
     item.price * (item.qty ?? item.quantity),
   ]);
 
-  autoTable(doc, {
-    startY: 105,
-    head: [['S.No', 'Item', 'Qty', 'Rate (Rs.)', 'Amount (Rs.)']],
-    body: tableBody,
-    foot: [['TOTAL', '', totalQty, '', `Rs.${totalAmt}`]],
-    margin: { left: margin, right: margin },
-    styles: {
-      fontSize:    8.5,
-      cellPadding: 3,
-      textColor:   [0, 0, 0],
-      lineColor:   [0, 0, 0],
-      lineWidth:   0.25,
-      overflow:    'linebreak',
+autoTable(doc, {
+  startY: 105,
+
+  head: [['S.No', 'Item', 'Qty', 'Rate (Rs.)', 'Amount (Rs.)']],
+
+  body: tableBody,
+
+  foot: [['TOTAL', '', totalQty, '', `Rs.${totalAmt}`]],
+
+  margin: {
+    left: margin,
+    right: margin,
+  },
+
+  styles: {
+    fontSize: 8.5,
+    cellPadding: 3,
+    textColor: [0, 0, 0],
+    lineColor: [0, 0, 0],
+    lineWidth: 0.25,
+    overflow: 'linebreak',
+  },
+
+  headStyles: {
+    fillColor: [255, 255, 255],
+    textColor: [0, 0, 0],
+    fontStyle: 'normal',
+    lineWidth: 0.3,
+  },
+
+  footStyles: {
+    fillColor: [255, 255, 255],
+    textColor: [0, 0, 0],
+    fontStyle: 'bold',
+    lineWidth: 0.3,
+  },
+
+  columnStyles: {
+    0: {
+      cellWidth: 16,
+      halign: 'center',
     },
-    headStyles: {
-      fillColor: [255, 255, 255],
-      textColor: [0, 0, 0],
-      fontStyle: 'normal',
-      lineWidth: 0.3,
+
+    1: {
+      cellWidth: 85,
     },
-    footStyles: {
-      fillColor: [255, 255, 255],
-      textColor: [0, 0, 0],
-      fontStyle: 'bold',
-      lineWidth: 0.3,
-      halign: 'center',   
+
+    2: {
+      cellWidth: 16,
+      halign: 'center',
     },
-    columnStyles: {
-      0: { cellWidth: 16, halign: 'center' },
-      1: { cellWidth: 85 },
-      2: { cellWidth: 16, halign: 'center' },
-      3: { cellWidth: 30, halign: 'right' },
-      4: { cellWidth: 33, halign: 'right' },
+
+    3: {
+      cellWidth: 30,
+      halign: 'right',
     },
-    theme: 'grid',
-  });
+
+    4: {
+      cellWidth: 33,
+      halign: 'right',
+    },
+  },
+
+  didParseCell: function (data) {
+
+    // Footer row custom alignment
+    if (data.section === 'foot') {
+
+      // TOTAL column center
+      if (data.column.index === 0) {
+        data.cell.styles.halign = 'center';
+      }
+
+      // Quantity column center
+      if (data.column.index === 2) {
+        data.cell.styles.halign = 'center';
+      }
+
+      // Total Amount column right
+      if (data.column.index === 4) {
+        data.cell.styles.halign = 'right';
+      }
+    }
+  },
+
+  theme: 'grid',
+});
 
   // ════════════════════════════════════════════════════
   // PAYMENT SUMMARY
